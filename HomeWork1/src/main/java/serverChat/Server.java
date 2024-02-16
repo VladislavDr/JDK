@@ -1,17 +1,18 @@
-package ServerChat;
+package serverChat;
+
+import client.Client;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
-public class WindowServer extends JFrame {
+public class Server extends JFrame implements ClientListener {
     private static final int WINDOW_WIDTH = 350;
     private static final int WINDOW_HEIGHT = 250;
     private JButton btnStart, btnStop, btnExit;
@@ -19,9 +20,10 @@ public class WindowServer extends JFrame {
     public final JTextArea LOG_SERVER = new JTextArea(10, 30);
     private static final String ALREADY_ENABLE = "Сервер уже запущен.";
     private static final String STILL_OFF = "Сервер еще не запущен";
+    private static List<Client> loginUser = new ArrayList<>();
 
 
-    public WindowServer() {
+    public Server() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setLocationRelativeTo(null);
@@ -38,7 +40,7 @@ public class WindowServer extends JFrame {
         btnStart.addActionListener(e -> {
             setVisible(true);
             if (IS_SERVER_WORK) {
-                System.out.println("Сервер уже запущен"); //TODO доделать нужно!
+                System.out.println("Сервер уже запущен");
                 showWarning(ALREADY_ENABLE);
                 return;
             }
@@ -47,7 +49,7 @@ public class WindowServer extends JFrame {
         });
 
         btnStop.addActionListener(e -> {
-            if (!IS_SERVER_WORK){
+            if (!IS_SERVER_WORK) {
                 System.out.println("Сервер еще не запущен"); //TODO доделать нужно!
                 showWarning(STILL_OFF);
                 return;
@@ -68,7 +70,6 @@ public class WindowServer extends JFrame {
 
     public static void addTextChat(String text) {
         File file = new File("logs.txt");
-
         {
             try {
                 FileWriter fw = new FileWriter(file, true);
@@ -79,7 +80,8 @@ public class WindowServer extends JFrame {
             }
         }
     }
-    public static List<String> readTextChat(){
+
+    public static List<String> readTextChat() {
         List<String> content = null;
         try {
             content = Files.readAllLines(Paths.get("notes.txt"));
@@ -88,17 +90,39 @@ public class WindowServer extends JFrame {
         }
         return content;
     }
-//    public void textArea(String text){
+
+    //    public void textArea(String text){
 //        getContentPane().add(LOG_SERVER, BorderLayout.CENTER);
 //        addTextChat(String.valueOf(LOG_SERVER));
 //        pack();
 //    }
-    public void showWarning(String text){
+    public void showWarning(String text) {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         JLabel jl = new JLabel(text, SwingConstants.CENTER);
         getContentPane().add(jl);
         pack();
+    }
+
+    @Override
+    public void onConnection(Client client) {
+        loginUser.add(client);
+    }
+
+    @Override
+    public void onDisconnected(Client client) {
+        loginUser.remove(client);
+    }
+
+    //    @Override
+//    public void onReceiving(Client client, String text) {
+//        LOG_SERVER.append(text);
+//    }
+    @Override
+    public void onReceiving(String text) {
+        LOG_SERVER.append(text);
+        addTextChat(LOG_SERVER.getText());
+        System.out.println(LOG_SERVER.getText());
     }
 }

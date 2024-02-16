@@ -1,10 +1,10 @@
-import Client.ClientWindow;
-import ServerChat.WindowServer;
+import client.ClientGUI;
+import serverChat.Server;
 
 public class main {
     public static void main(String[] args) {
-        WindowServer windowServer = new WindowServer();
-        new ClientWindow(windowServer);
-        new ClientWindow(windowServer);
+        Server server = new Server();
+        new ClientGUI(server);
+        new ClientGUI(server);
     }
 }
