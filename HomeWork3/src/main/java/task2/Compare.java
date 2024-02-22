@@ -11,7 +11,7 @@ public class Compare<T> {
             return false;
         } else {
             for (int i = 0; i < lst1.size(); i++) {
-                if(lst1.get(i).equals(lst2.get(i))){
+                if(lst1.get(i).getClass().equals(lst2.get(i).getClass())){
                     bool = true;
                 } else bool = false;
             }
