@@ -33,6 +33,7 @@ public class Fhilosophers extends Thread {
             if (bool) {
                 cdlEat.countDown();
                 System.out.println(this.getNamePhilosophers() + " покушал " + (eat - cdlEat.getCount()) + " раза вилками " + fork1 + " и " + fork2);
+                System.out.println(this.getNamePhilosophers() + " вернул вилки " + fork1 + " и " + fork2 + " на место");
                 Thread.sleep(500);
             } else thinks();
         }

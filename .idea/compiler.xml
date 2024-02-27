@@ -10,6 +10,7 @@
         <module name="untitled" />
         <module name="HomeWork3" />
         <module name="HomeWork4" />
+        <module name="HomeWork5" />
       </profile>
     </annotationProcessing>
   </component>

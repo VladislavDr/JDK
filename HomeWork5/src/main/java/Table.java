@@ -11,14 +11,6 @@ public class Table extends Thread{
     Fhilosophers fiveFhilosophers = new Fhilosophers("Fhilosopher N5", count);
     Fhilosophers sixFhilosophers = new Fhilosophers("Fhilosopher N6", count);
 
-//    {
-//        Fork forkOne = new Fork(1);
-//        Fork forkTwo = new Fork(2);
-//        Fork forkTree = new Fork(3);
-//        Fork forkFour = new Fork(4);
-//        Fork forkFive = new Fork(5);
-//    }
-
     @Override
     public void start() {
         oneFhilosophers.start();
